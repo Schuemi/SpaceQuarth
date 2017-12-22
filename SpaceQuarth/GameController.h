@@ -45,8 +45,8 @@ public:
     virtual ~GameController();
     void calcGameLogic();
     void draw();
-    void reset(uint8_t startLevel);
-    void reset();
+    void reset(uint8_t startLevel, uint8_t gameMode);
+   
     bool haveSavedGame();
     void deleteSavedGame();
     uint32_t getPoints();
@@ -96,6 +96,9 @@ private:
         uint8_t m_currentLevel;
         uint8_t m_currentLevelStage;
         uint8_t m_currentLevelMircoStage;
+        
+        uint8_t m_gameMode;
+        
         uint16_t m_dataMagic;
     };
     

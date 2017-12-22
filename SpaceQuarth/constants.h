@@ -32,6 +32,14 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+enum GAME_MODE {
+    GAME_MODE_EASY = 0,
+    GAME_MODE_NORMAL,
+    GAME_MODE_HARD,
+    
+};
+#define VERSION_MAJOR "1"
+#define VERSION_MINOR "1"
 
 #define GAMEFIELD_X 35
 #define GAMEFIELD_BRICKS_WIDTH 16
@@ -44,6 +52,7 @@
 #define EEPROM_HIGHSCORE_SIZE 48 // highscore SIze in bytes
 #define EEPROM_AUTOSAVE_BYTE 19
 #define EEPROM_GAME_CLEARED_BYTE 18 // here we save, if the user managed to clear all levels. After this he can choose the level in the dashboard
+#define EEPROM_GAME_MODE_BYTE 17 // the Game Mode Easy / Middle / Hard
 
 #define EEPROM_GAMEDATA_BYTE EEPROM_HIGHSCORE_BYTE + EEPROM_HIGHSCORE_SIZE// the byte where the gamedata starts (gamedata size: 450 Bytes)
 #define EEPROM_MAGIC 255312453 // If I find this magic in the EEPROM, I load the data from it

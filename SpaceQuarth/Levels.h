@@ -44,7 +44,7 @@ struct levelCharacteristics {
         uint8_t tightLevel; // how tight are the objects places together to one objectGroup 0 - 3
 };
  
-static void getLcharacteristics(uint8_t level, uint8_t levelStage, levelCharacteristics* levelc) {
+static void getLcharacteristics(uint8_t level, uint8_t levelStage, uint8_t gameMode, levelCharacteristics* levelc) {
    
     
     
@@ -154,7 +154,8 @@ static void getLcharacteristics(uint8_t level, uint8_t levelStage, levelCharacte
         
     }
     
-    
+    if (gameMode == GAME_MODE_NORMAL)  levelc->scrollSpeed --;
+    if (gameMode == GAME_MODE_HARD)  levelc->scrollSpeed -=2;
     
 }   
 struct levelObject {

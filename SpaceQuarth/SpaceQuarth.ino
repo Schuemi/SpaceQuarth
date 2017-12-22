@@ -64,7 +64,7 @@ void* getInstance() {
 void setup() {
     
     
-  arduboy.begin();
+  arduboy.boot();
 
   arduboy.setFrameRate(30);
   
@@ -92,7 +92,7 @@ void loop() {
         if (dBoard.m_startGame){
             mainState = MAINSTATE_GAME;
           
-            game.reset(dBoard.m_startLevel);
+            game.reset(dBoard.m_startLevel, dBoard.m_gameMode);
         }
         if (dBoard.m_startHighScore){
             mainState = MAINSTATE_HIGHSCORE;

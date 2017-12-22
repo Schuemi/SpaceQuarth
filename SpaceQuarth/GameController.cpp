@@ -55,7 +55,7 @@ const uint8_t PROGMEM GameController::brickSpezial[] = {
 GameController::GameController() {
    g_arduboy = (Arduboy2*)getInstance();
    
-   reset(1);
+   reset(1, GAME_MODE_EASY);
    m_spaceShip = new SpaceShip(m_gameData.m_shipXPosition);
    m_starField = new StarField(GAMEFIELD_X, 0, 57, 64, 1);
    m_tones = new ArduboyTones(g_arduboy->audio.enabled);
@@ -68,13 +68,9 @@ GameController::GameController() {
 GameController::~GameController() {
 }
 
-void GameController::reset() {
-    reset(1);
-}
 
 
-
-void GameController::reset(uint8_t startLevel) {
+void GameController::reset(uint8_t startLevel, uint8_t gameMode) {
     
     
     if (! haveSavedGame()) {
@@ -87,6 +83,9 @@ void GameController::reset(uint8_t startLevel) {
         m_gameLoaded = false;
         m_gameData.m_currentLevel = startLevel;
       
+        m_gameData.m_gameMode = gameMode;
+        
+        EEPROM.update(EEPROM_GAME_MODE_BYTE + EEPROM_STORAGE_SPACE_START, m_gameData.m_gameMode);
        
         m_gameData.m_dataMagic = GAME_DATA_MAGIC;
     } else {
@@ -96,7 +95,7 @@ void GameController::reset(uint8_t startLevel) {
     m_spaceShip->reset();
     m_noCollision = 0;
     m_spaceShip->setyPos((0 - (m_gameData.m_scrollPosition - 234)));
-    getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, &m_currentLevelCharacteristics);
+    getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, m_gameData.m_gameMode, &m_currentLevelCharacteristics);
     
 }
 
@@ -402,7 +401,7 @@ void GameController::draw() {
             m_gameData.m_currentLevel++;
             if (m_gameData.m_currentLevel == 10) m_gameData.m_gameOver = true;
             m_gameData.m_currentLevelStage = 0;
-            getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, &m_currentLevelCharacteristics);
+            getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, m_gameData.m_gameMode, &m_currentLevelCharacteristics);
            
         }
     } else {
@@ -430,7 +429,7 @@ void GameController::draw() {
                         m_gameData.m_currentLevelStage++;
                         m_gameData.m_currentLevelMircoStage = 0;
                         m_gameData.m_drawingObjectCount = 0;
-                        getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, &m_currentLevelCharacteristics);
+                        getLcharacteristics(m_gameData.m_currentLevel, m_gameData.m_currentLevelStage, m_gameData.m_gameMode, &m_currentLevelCharacteristics);
                     }
                     
                 }
@@ -769,11 +768,18 @@ void GameController::checkForQuarth(uint8_t x, uint8_t y)
     }
     else if (points > 0) {
         uint16_t disPoints = points/m_gameData.m_lastFoundObjectsCount;
+        
         m_gameData.m_bricksAreDisappearing = true;
-        if (disPoints*3 < 225)
-            m_gameData.m_destroyBrickWaitingCounter = (disPoints*2) + 25;
-        else
-            m_gameData.m_destroyBrickWaitingCounter = 250;
+        if (m_gameData.m_gameMode == GAME_MODE_HARD)  { 
+            m_gameData.m_destroyBrickWaitingCounter = 20; 
+        } else {
+            if (disPoints*2 < 250)
+                m_gameData.m_destroyBrickWaitingCounter = (disPoints*2) + 25;
+            else
+                m_gameData.m_destroyBrickWaitingCounter = 250;
+        }
+        
+        
         
         uint8_t currX1 = foundX1;
         uint8_t currX2 = foundX2;

@@ -46,6 +46,7 @@ public:
     bool m_startGame;
     bool m_startHighScore;
     uint8_t m_startLevel;
+    uint8_t m_gameMode;
 private:
     static const uint8_t title[];
     Arduboy2* g_arduboy;
