@@ -303,7 +303,7 @@ bool GameController::isSpeedUp(){ return m_gameData.m_speedUp; }
     
 void GameController::deleteSavedGame() {
     if (EEPROM.read(EEPROM_AUTOSAVE_BYTE + EEPROM_STORAGE_SPACE_START))
-        EEPROM.write(EEPROM_GAMEDATA_BYTE + EEPROM_STORAGE_SPACE_START + ((uint16_t)&m_gameData.m_dataMagic - (uint16_t)&m_gameData), (uint16_t)0);
+        EEPROM.update(EEPROM_GAMEDATA_BYTE + EEPROM_STORAGE_SPACE_START + ((uint16_t)&m_gameData.m_dataMagic - (uint16_t)&m_gameData), (uint16_t)0);
         
     
 }
@@ -390,7 +390,7 @@ void GameController::draw() {
             m_spaceShip->setyPos(10 - ((m_gameData.m_scrollPosition - 900)) / 5);
             
         } else if (m_gameData.m_scrollPosition == 1500 && m_gameData.m_currentLevel == 8){
-             EEPROM.write(EEPROM_GAME_CLEARED_BYTE + EEPROM_STORAGE_SPACE_START, 0x32); 
+             EEPROM.update(EEPROM_GAME_CLEARED_BYTE + EEPROM_STORAGE_SPACE_START, 0x32); 
             m_gameData.m_gameOver = true;
         }
         

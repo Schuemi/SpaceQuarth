@@ -143,7 +143,7 @@ void DashBoard::draw() {
             g_arduboy->audio.saveOnOff();
         }
         if (m_currSelected == 1){
-           if (isSave) EEPROM.write(EEPROM_AUTOSAVE_BYTE + EEPROM_STORAGE_SPACE_START, 0); else  EEPROM.write(EEPROM_AUTOSAVE_BYTE + EEPROM_STORAGE_SPACE_START, 1);
+           if (isSave) EEPROM.update(EEPROM_AUTOSAVE_BYTE + EEPROM_STORAGE_SPACE_START, 0); else  EEPROM.update(EEPROM_AUTOSAVE_BYTE + EEPROM_STORAGE_SPACE_START, 1);
         }
     }
     if (g_arduboy->justPressed(LEFT_BUTTON)){
