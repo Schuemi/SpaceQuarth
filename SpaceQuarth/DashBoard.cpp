@@ -202,7 +202,7 @@ void DashBoard::draw() {
     }
     
     g_arduboy->setCursor(105, 56);
-    g_arduboy->print("V"VERSION_MAJOR"."VERSION_MINOR);
+    g_arduboy->print(F("V"VERSION_MAJOR"."VERSION_MINOR));
     
     g_arduboy->drawBitmap(m_fontPosition, 5, title, 120, 31);
     g_arduboy->display();
