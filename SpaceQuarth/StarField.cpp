@@ -42,20 +42,22 @@ StarField::StarField(uint8_t x, uint8_t y, uint8_t width, uint8_t height, uint8_
     m_direction = direction;
     for (int i = 0; i < MAX_STARS; i++) {
         m_starsX[i] = m_x + random(m_width);
-        m_starsY[i] = m_y + random(m_height);
-        m_starsSpeed[i] = random(3) + 1;
+        m_starsY_Speed[i] = m_y + random(m_height);
+        m_starsY_Speed[i] += ((random(3)) << 6);
     }
     
 }
 
 void StarField::move() {
    for (int i = 0; i < MAX_STARS; i++) {
+       uint8_t y = m_starsY_Speed[i] & 0x3f;
+       uint8_t speed = (m_starsY_Speed[i] >> 6) + 1;
        if (m_direction == 1) {
-            m_starsY[i] += m_starsSpeed[i];
-            if (m_starsY[i] > m_y + m_height){
+           y += speed;
+            if (y > m_y + m_height){
                 m_starsX[i] = m_x + random(m_width);
-                m_starsY[i] = m_y;
-                m_starsSpeed[i] = random(3) + 1;
+                y = m_y;
+                speed = random(3);
             }
        }
       /* if (m_direction == 2) {
@@ -75,20 +77,23 @@ void StarField::move() {
        }*/
        if (m_direction == 4) {
             if (m_starsX[i] < 2){
-                m_starsY[i] = m_y + random(m_height);
+                y = m_y + random(m_height);
                 m_starsX[i] = m_x + m_width;
-                m_starsSpeed[i] = random(3) + 1;
-            } else m_starsX[i] -= m_starsSpeed[i];
+                speed = random(3);
+            } else m_starsX[i] -=speed;
        }
-       
+       m_starsY_Speed[i] = y;
+       m_starsY_Speed[i] += ((speed - 1) << 6);
    } 
 }
 void StarField::draw(bool warp) {
     for (int i = 0; i < MAX_STARS; i++) {
-         g_arduboy->drawPixel(m_starsX[i], m_starsY[i],1);
-         if (warp || m_starsSpeed[i] > 2){
-            if (m_direction == 1) g_arduboy->drawPixel(m_starsX[i], m_starsY[i] + 1,1); //  || m_direction == 2
-            if (m_direction == 4) g_arduboy->drawPixel(m_starsX[i] + 1, m_starsY[i],1); // m_direction == 3 || 
+        uint8_t y = m_starsY_Speed[i] & 0x3f;
+        uint8_t speed = (m_starsY_Speed[i] >> 6) + 1;
+         g_arduboy->drawPixel(m_starsX[i], y,1);
+         if (warp || speed > 2){
+            if (m_direction == 1) g_arduboy->drawPixel(m_starsX[i], y + 1,1); //  || m_direction == 2
+            if (m_direction == 4) g_arduboy->drawPixel(m_starsX[i] + 1, y,1); // m_direction == 3 || 
             
          }
     }

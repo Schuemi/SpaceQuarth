@@ -55,7 +55,7 @@ const uint8_t PROGMEM GameController::brickSpezial[] = {
 GameController::GameController() {
    g_arduboy = (Arduboy2*)getInstance();
    
-   reset(1, GAME_MODE_EASY);
+   reset(1, GAME_MODE_NONE);
    m_spaceShip = new SpaceShip(m_gameData.m_shipXPosition);
    m_starField = new StarField(GAMEFIELD_X, 0, 57, 64, 1);
    m_tones = new ArduboyTones(g_arduboy->audio.enabled);
@@ -85,7 +85,9 @@ void GameController::reset(uint8_t startLevel, uint8_t gameMode) {
       
         m_gameData.m_gameMode = gameMode;
         
-        EEPROM.update(EEPROM_GAME_MODE_BYTE + EEPROM_STORAGE_SPACE_START, m_gameData.m_gameMode);
+        if (m_gameData.m_gameMode != GAME_MODE_NONE) {
+            EEPROM.update(EEPROM_GAME_MODE_BYTE + EEPROM_STORAGE_SPACE_START, m_gameData.m_gameMode);
+        }
        
         m_gameData.m_dataMagic = GAME_DATA_MAGIC;
     } else {

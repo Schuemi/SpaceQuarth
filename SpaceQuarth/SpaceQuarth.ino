@@ -65,7 +65,10 @@ void setup() {
     
     
   arduboy.boot();
-
+  arduboy.blank();
+  arduboy.systemButtons();
+  
+  
   arduboy.setFrameRate(30);
   
   
@@ -128,7 +131,6 @@ void loop() {
         
     
 }
-
 
 
 

@@ -47,8 +47,7 @@ public:
 private:
    
     uint8_t m_starsX[MAX_STARS];
-    uint8_t m_starsY[MAX_STARS];
-    uint8_t m_starsSpeed[MAX_STARS];
+    uint8_t m_starsY_Speed[MAX_STARS];
     uint8_t m_x;
     uint8_t m_width;
     uint8_t m_y;
